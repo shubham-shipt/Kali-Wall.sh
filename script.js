@@ -14,14 +14,10 @@ function searchWallpapers() {
 }
 
 function checkFileExists(url, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.open("HEAD", url, true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            callback(xhr.status === 200);
-        }
-    };
-    xhr.send();
+    const img = new Image();
+    img.onload = () => callback(true);
+    img.onerror = () => callback(false);
+    img.src = url;
 }
 
 function getRandomInt(min, max) {
