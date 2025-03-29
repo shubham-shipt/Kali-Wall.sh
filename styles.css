@@ -14,7 +14,7 @@ body {
     animation: fadeIn 0.5s ease-in;
 }
 
-.preloader {
+#preloader {
     position: fixed;
     top: 0;
     left: 0;
@@ -25,16 +25,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.5s ease-out;
-    opacity: 1;
+    animation: fadeOut 0.5s ease-out forwards 1s;
 }
 
-.preloader.hidden {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.preloader:after {
+#preloader:after {
     content: 'Loading...';
     color: #00C4B4;
     font-size: 1.5rem;
@@ -51,7 +45,7 @@ body {
     z-index: 9999;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 10px #00C4B4, 0 0 15px #00DDEB;
-    /* Removed neonPulse to reduce flicker */
+    animation: neonPulse 1.5s infinite ease-in-out;
 }
 
 .cursor-trail {
@@ -355,7 +349,7 @@ nav ul li {
     border: 1px solid #00C4B4;
     color: #fff;
     font-family: 'Roboto Mono', monospace;
-    border-radius: 5px 0  servings: 8px;
+    border-radius: 5px 0 0 5px;
 }
 
 .search-bar button {
@@ -449,7 +443,7 @@ nav ul li {
 
 #cursor {
     display: inline-block;
-    animation: blink 1s step-end infinite; /* Adjusted for less aggressive blinking */
+    animation: blink 0.7s infinite;
 }
 
 .speech-controls {
@@ -487,7 +481,8 @@ nav ul li {
     padding: 6px;
     border-radius: 5px;
     text-align: center;
-    transition: transform 0.3s ease; /* Reduced transition duration */
+    transition: transform 1s ease;
+    will-change: transform;
     box-shadow: 0 0 10px rgba(0, 196, 180, 0.5);
     position: relative;
     border: 2px solid #00C4B4;
@@ -565,10 +560,15 @@ footer {
     100% { opacity: 1; }
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes neonPulse {
+    0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px #00C4B4, 0 0 15px #00DDEB; }
+    50% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 15px #00C4B4, 0 0 20px #00DDEB; }
+    100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px #00C4B4, 0 0 15px #00DDEB; }
 }
 
 @keyframes rippleEffect {
