@@ -3,6 +3,7 @@ function searchWallpapers() {
     const wallpapers = document.querySelectorAll(".wallpaper");
     wallpapers.forEach(wallpaper => {
         const img = wallpaper.querySelector("img");
+        console.log("Image src:", img.src, "Alt text:", img.alt);
         if (input === "") {
             wallpaper.style.display = "block";
         } else {
@@ -13,25 +14,18 @@ function searchWallpapers() {
 }
 
 function checkFileExists(url, callback) {
-    const img = new Image();
-    img.onload = () => callback(true);
-    img.onerror = () => callback(false);
-    img.src = url;
+    const xhr = new XMLHttpRequest();
+    xhr.open("HEAD", url, true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            callback(xhr.status === 200);
+        }
+    };
+    xhr.send();
 }
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function throttle(func, limit) {
-    let inThrottle;
-    return function (...args) {
-        if (!inThrottle) {
-            func.apply(this, args);
-            inThrottle = true;
-            setTimeout(() => (inThrottle = false), limit);
-        }
-    };
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -42,12 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalDownloadsElement = document.getElementById("total-downloads");
     const liveUsersElement = document.getElementById("live-users");
     const activeUsersElement = document.getElementById("active-users");
-
-    // Hide preloader when page is fully loaded
-    window.addEventListener("load", () => {
-        const preloader = document.querySelector(".preloader");
-        preloader.classList.add("hidden");
-    });
 
     const commands = {
         "whoami": "root",
@@ -145,15 +133,23 @@ document.addEventListener("DOMContentLoaded", () => {
             commandHistory = [];
             terminalOutput.innerHTML = `root@kali:~$ <span id="command-text"></span><span id="cursor">█</span>`;
         } else {
-            const newLine = document.createElement("div");
-            newLine.innerHTML = `root@kali:~$ ${cmd}<br>${output}`;
-            terminalOutput.insertBefore(newLine, terminalOutput.querySelector("#command-text")?.parentNode);
+            terminalOutput.innerHTML = "";
+            commandHistory.forEach(entry => {
+                terminalOutput.innerHTML += `root@kali:~$ ${entry.command}<br>${entry.output}<br>`;
+            });
+            terminalOutput.innerHTML += `root@kali:~$ <span id="command-text"></span><span id="cursor">█</span>`;
         }
         terminalOutput.parentElement.scrollTop = terminalOutput.parentElement.scrollHeight;
-        if ("speechSynthesis" in window) {
+        if ("speechSynthesis" in window && window.speechSynthesis) {
             const utterance = new SpeechSynthesisUtterance(cmd);
-            utterance.onerror = () => console.error("Speech synthesis failed");
+            utterance.onerror = () => {
+                console.error("Speech synthesis failed");
+                alert("Text-to-speech failed. Please try again.");
+            };
             window.speechSynthesis.speak(utterance);
+        } else {
+            console.warn("Text-to-speech not supported in this browser");
+            alert("Text-to-speech is not supported in this browser.");
         }
         terminalInput.focus();
     };
@@ -171,6 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 micBtn.style.borderColor = "#00DDEB";
             } catch (error) {
                 console.error("Speech recognition start failed:", error);
+                alert("Failed to start speech recognition. Please check your microphone and browser permissions.");
                 micBtn.style.background = "#415a77";
                 micBtn.style.borderColor = "#00C4B4";
             }
@@ -186,6 +183,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         recognition.onerror = (event) => {
             console.error("Speech recognition error:", event.error);
+            if (event.error === "no-speech") {
+                alert("No speech detected. Please speak clearly and try again.");
+            } else if (event.error === "audio-capture") {
+                alert("Microphone not found or access denied. Please check your microphone settings.");
+            } else {
+                alert("Speech recognition failed: " + event.error);
+            }
             micBtn.style.background = "#415a77";
             micBtn.style.borderColor = "#00C4B4";
         };
@@ -196,14 +200,19 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     } else {
         micBtn.style.display = "none";
+        console.warn("Speech recognition not supported in this browser");
+        alert("Speech recognition is not supported in this browser. Please use a supported browser like Chrome.");
     }
 
     speakBtn.addEventListener("click", () => {
         const lastCommandEntry = commandHistory[commandHistory.length - 1];
         const lastCommand = lastCommandEntry ? lastCommandEntry.command : "No command to read";
-        if ("speechSynthesis" in window) {
+        if ("speechSynthesis" in window && window.speechSynthesis) {
             const utterance = new SpeechSynthesisUtterance(lastCommand);
-            utterance.onerror = () => console.error("Speech synthesis failed");
+            utterance.onerror = () => {
+                console.error("Speech synthesis failed");
+                alert("Text-to-speech failed. Please try again.");
+            };
             window.speechSynthesis.speak(utterance);
             speakBtn.style.background = "#00C4B4";
             speakBtn.style.borderColor = "#00DDEB";
@@ -211,6 +220,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 speakBtn.style.background = "#415a77";
                 speakBtn.style.borderColor = "#00C4B4";
             };
+        } else {
+            console.warn("Text-to-speech not supported in this browser");
+            alert("Text-to-speech is not supported in this browser.");
         }
     });
 
@@ -252,6 +264,9 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const scrollAmount = getRandomInt(100, 500) * (Math.random() < 0.5 ? -1 : 1);
             window.scrollBy({ top: scrollAmount, behavior: "smooth" });
+            document.querySelectorAll(".wallpaper").forEach(card => {
+                card.style.transform = `rotate(${getRandomInt(-5, 5)}deg)`;
+            });
         });
     });
 
@@ -261,6 +276,12 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const scrollAmount = tag.textContent === "#DarkTheme" ? 300 : getRandomInt(100, 500) * (Math.random() < 0.5 ? -1 : 1);
             window.scrollBy({ top: scrollAmount, behavior: "smooth" });
+            document.querySelectorAll(".wallpaper").forEach(card => {
+                card.style.transform = `rotate(${getRandomInt(-5, 5)}deg)`;
+                setTimeout(() => {
+                    card.style.transform = "rotate(0deg)";
+                }, 1000);
+            });
         });
     });
 
@@ -275,8 +296,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let angle = 0;
+    let lastX = 0, lastY = 0;
+    let isAnimating = false;
 
     const animateCursor = (e) => {
+        if (!isAnimating) return;
         const x = e.clientX;
         const y = e.clientY;
         cursor.style.left = x + "px";
@@ -285,16 +309,24 @@ document.addEventListener("DOMContentLoaded", () => {
         trails.forEach((trail, index) => {
             const radius = 15 + index * 8;
             const trailAngle = angle + index * (2 * Math.PI / trailCount);
-            const offsetX = Math.cos(trailAngle) * radius;
-            const offsetY = Math.sin(trailAngle) * radius;
-            trail.style.left = x + offsetX + "px";
-            trail.style.top = y + offsetY + "px";
-            trail.style.opacity = 0.4 - index * 0.05;
+            const offsetX = Math.cos(trailAngle) * radius + 20 * Math.sin(angle + index);
+            const offsetY = Math.sin(trailAngle) * radius + 20 * Math.cos(angle + index);
+            trail.style.left = (x + offsetX) + "px";
+            trail.style.top = (y + offsetY) + "px";
+            trail.style.opacity = 0.4 - (index * 0.05);
             trail.style.transform = `scale(${0.8 - index * 0.1})`;
         });
+        lastX = x;
+        lastY = y;
+        requestAnimationFrame(() => animateCursor(e));
     };
 
-    document.addEventListener("mousemove", throttle(animateCursor, 16)); // Throttled to 60fps
+    document.addEventListener("mousemove", (e) => {
+        if (!isAnimating) {
+            isAnimating = true;
+            requestAnimationFrame(() => animateCursor(e));
+        }
+    });
 
     document.addEventListener("mousedown", (e) => {
         const ripple = document.createElement("div");
@@ -304,7 +336,14 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.appendChild(ripple);
         setTimeout(() => ripple.remove(), 1200);
 
-        for (let i = 0; i < 3; i++) { // Reduced from 10 to 3
+        const shockwave = document.createElement("div");
+        shockwave.className = "shockwave";
+        shockwave.style.left = e.clientX + "px";
+        shockwave.style.top = e.clientY + "px";
+        document.body.appendChild(shockwave);
+        setTimeout(() => shockwave.remove(), 1500);
+
+        for (let i = 0; i < 10; i++) {
             const spark = document.createElement("div");
             spark.className = "spark";
             spark.style.left = e.clientX + "px";
@@ -313,6 +352,21 @@ document.addEventListener("DOMContentLoaded", () => {
             spark.style.setProperty("--ty", getRandomInt(-30, 30) + "px");
             document.body.appendChild(spark);
             setTimeout(() => spark.remove(), 800);
+        }
+
+        for (let i = 0; i < 12; i++) {
+            const particle = document.createElement("div");
+            particle.className = "particle";
+            particle.style.left = e.clientX + "px";
+            particle.style.top = e.clientY + "px";
+            const angle = (2 * Math.PI * i) / 12;
+            const distance = 40;
+            const tx = distance * Math.cos(angle);
+            const ty = distance * Math.sin(angle);
+            particle.style.setProperty("--tx", tx + "px");
+            particle.style.setProperty("--ty", ty + "px");
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 1000);
         }
     });
 
@@ -330,12 +384,12 @@ document.addEventListener("DOMContentLoaded", () => {
             wallpaper.appendChild(ripple);
             setTimeout(() => ripple.remove(), 1000);
 
-            for (let i = 0; i < 3; i++) { // Reduced from 6 to 3
+            for (let i = 0; i < 6; i++) {
                 const particle = document.createElement("div");
                 particle.className = "wallpaper-particle";
                 particle.style.left = x + "px";
                 particle.style.top = y + "px";
-                const angle = (2 * Math.PI * i) / 3;
+                const angle = (2 * Math.PI * i) / 6;
                 const distance = 20;
                 const tx = distance * Math.cos(angle);
                 const ty = distance * Math.sin(angle);
@@ -346,17 +400,33 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        wallpaper.addEventListener("mousemove", throttle((e) => {
+        wallpaper.addEventListener("mousemove", (e) => {
             const rect = wallpaper.getBoundingClientRect();
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
             const rotateX = (y / rect.height) * 15;
             const rotateY = -(x / rect.width) * 15;
             wallpaper.querySelector("img").style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        }, 16));
+        });
 
         wallpaper.addEventListener("mouseleave", () => {
             wallpaper.querySelector("img").style.transform = "rotateX(0deg) rotateY(0deg)";
+        });
+    });
+
+    const interactiveElements = document.querySelectorAll(".nav-btn, .tag, .wallpaper, .download-btn, .speech-controls button");
+    interactiveElements.forEach(element => {
+        element.addEventListener("mousemove", (e) => {
+            for (let i = 0; i < 3; i++) {
+                const particle = document.createElement("div");
+                particle.className = "hover-particle";
+                particle.style.left = e.clientX + "px";
+                particle.style.top = e.clientY + "px";
+                particle.style.setProperty("--tx", getRandomInt(-15, 15) + "px");
+                particle.style.setProperty("--ty", getRandomInt(-15, 15) + "px");
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 600);
+            }
         });
     });
 
