@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KaliWall - Wallpapers</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <!-- Left Sidebar -->
+    <div class="sidebar left-sidebar">
+        <div class="sidebar-content">
+            <img src="arch.svg" alt="Kali Linux Logo" class="sidebar-icon">
+            <img src="Metasploit--Streamline-Simple-Icons.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="nmap.svg" alt="Nmap Logo" class="sidebar-icon">
+            <img src="hacker-solid.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="Kali3.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="kali4.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="kali6.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="kali7.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="kali20.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="kali9.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="kali10.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="kali11.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="kali12.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="kali13.svg" alt="Tux Penguin" class="sidebar-icon">
+            <img src="kali17.svg" alt="Tux Penguin" class="sidebar-icon">
+            <span class="terminal-icon"></span>
+        </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="sidebar right-sidebar">
+        <div class="sidebar-content">
+            <!-- Neon Header with Kali Logo -->
+            <div class="sidebar-header">
+                <img src="Kali9.svg" alt="Kali Logo" class="kali-logo">
+            </div>
+
+            <!-- Stats Section -->
+            <div class="stats-section">
+                <p>Total Downloads</p>
+                <span class="highlight" id="total-downloads">62</span>
+                <p>Live Users</p>
+                <span class="highlight" id="live-users">3</span>
+                <p>Total Users</p>
+                <span class="highlight" id="active-users">57</span>
+            </div>
+
+            <!-- Developer Info -->
+            <div class="developer-info">
+                <p>Developer Info</p>
+                <a href="https://instagram.com/om_singh_213" class="icon instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/shubham-shipt" class="icon github"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/shubham-sh" class="icon linkedin"><i class="fab fa-linkedin"></i></a>
+                <a href="mailto:shubhamscript@gmail.com" class="icon email"><i class="fas fa-envelope"></i></a>
+                <a href="https://twitter.com/Om_singh_213" class="icon twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+
+            <!-- Powered By -->
+            <div class="powered-by">
+                <p>Powered by <a href="#" class="glitch" data-text="shubham.sh">shubham.sh</a></p>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">
+            <img src="Kali2.svg" alt="Kali Logo" class="header-logo">
+            <h1>Kali-Wall..</h1>
+            <p>The Best Kali Linux Wallpapers!</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-btn">🕒 Latest</a></li>
+                <li><a href="#" class="nav-btn">🏆 Toplist</a></li>
+                <li><a href="#" class="nav-btn">🎲 Random</a></li>
+                <li><a href="#" class="nav-btn">⬆️ Upload</a></li>
+                <li><a href="#" class="nav-btn">💬 Forums</a></li>
+                <!-- Logout button removed -->
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search...">
+            <button onclick="searchWallpapers()">🔍</button>
+        </div>
+        <section class="tags">
+            <a href="#" class="tag">#KaliLinux</a>
+            <a href="#" class="tag">#Cyberpunk</a>
+            <a href="#" class="tag">#DarkTheme</a>
+            <a href="#" class="tag">#TechArt</a>
+            <a href="#" class="tag">#MrRobot</a>
+            <a href="#" class="tag">More tags...</a>
+        </section>
+
+        <!-- Terminal in the Header Section -->
+        <div class="terminal-container">
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+                <div class="terminal-body">
+                    <p id="terminal-output">Negan :~$  <span id="command-text"></span><span id="cursor">█</span></p>
+                    <input type="text" id="terminal-input" style="opacity: 0; position: absolute;" />
+                </div>
+                <!-- Speech Buttons -->
+                <div class="speech-controls">
+                    <button id="mic-btn" title="Speak Command"><i class="fas fa-microphone"></i></button>
+                    <button id="speak-btn" title="Read Output"><i class="fas fa-volume-up"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+
+                                                                <section class="gallery">
+                                                                    <!-- Wallpaper Items -->
+                                                                    <div class="wallpaper">
+                                                                        <img src="58.png" alt="Kali Linux Wallpaper 1">
+                                                                        <a href="58.png" download class="download-btn">Download</a>
+                                                                    </div>
+
+                                                                    <div class="wallpaper">
+                                                                        <img src="59.png" alt="Kali Linux Wallpaper 2">
+                                                                        <a href="59.png" download class="download-btn">Download</a>
+                                                                    </div>
+
+                                                                    <div class="wallpaper">
+                                                                        <img src="82.png" alt="Kali Linux Wallpaper 3">
+                                                                        <a href="82.png" download class="download-btn">Download</a>
+                                                                    </div>
+
+                                                                    
+                                                                    
+                                                                </section>
+
+
+
+
+
+
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About</h3>
+                <p>KaliWall is a website created by Shubham Singh, where you can download official Kali Linux
+                    wallpapers. It’s simple and smooth, making it easy to browse and get high-quality wallpapers for
+                    your device.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <a href="https://github.com/shubham-shipt">🧑‍💻 GitHub</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <a href="mailto:shubhamscript@gmail.com">📧 Email Us</a>
+            </div>
+        </div>
+        <p class="footer-bottom">© 2025 KaliWall. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
