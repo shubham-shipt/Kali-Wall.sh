@@ -1,12 +1,11 @@
 <h1 align="center">🚀 KaliWall</h1>
 <p align="center">
-  <img src="https://img.shields.io/badge/HTML-%23E34F26.svg?&style=flat-square&logo=html5&logoColor=white"/>
-  <img src="https://img.shields.io/badge/CSS-%231572B6.svg?&style=flat-square&logo=css3&logoColor=white"/>
-  <img src="https://img.shields.io/badge/JavaScript-%23F7DF1E.svg?&style=flat-square&logo=javascript&logoColor=black"/>
+  <img src=![image](https://github.com/user-attachments/assets/f90da792-fdbc-4517-8685-cf8a7fb2bb4b) />
+
 </p>
 
 <p align="center">
-  <b>A cyberpunk-themed wallpaper hub for Kali Linux lovers</b><br>
+  <b>A themed wallpaper hub for Kali Linux lovers</b><br>
   Built with 💻 HTML, CSS, and JavaScript — No frameworks, just pure front-end magic.
 </p>
 
@@ -22,10 +21,6 @@
 - 📊 Real-time **mock system stats** (CPU, RAM, Network)
 - 📷 **Lazy-loaded wallpapers** for performance
 - 🌐 Cyberpunk-themed UI with dark mode + neon glow
-
----
-
-## 📁 File Structure
 
 
 ---
