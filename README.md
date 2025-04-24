@@ -38,8 +38,7 @@
 ### 🎙️ Speech Recognition in Action  
 <img src="https://github.com/user-attachments/assets/c2d09ef0-334c-4fba-8441-649c66937e38" alt="Speech Recognition" width="100%"/>
 
-
- 🔔 
+---
 
 ## 🛠️ Tech Used
 
