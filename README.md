@@ -30,7 +30,7 @@
 > Here are some glimpses of the KaliWall interface:
 
 ### 🖥️ Terminal + Neon UI  
-<img src="![image](https://github.com/user-attachments/assets/55f7b7d9-bc8b-4279-8bfe-6efc27433cca)
+<img src="![Screenshot 2025-04-24 202311](https://github.com/user-attachments/assets/e50028ab-ce64-448f-8246-bea370cfaff4)
 "/>
 
 ### 🖼️ Wallpaper Gallery with 3D Tilt  
@@ -39,9 +39,7 @@
 ### 🎙️ Speech Recognition in Action  
 <img src="preview/speech-control.png" alt="Speech Command" width="100%"/>
 
-> 🔔 
-
-
+ 🔔 
 
 ## 🛠️ Tech Used
 
