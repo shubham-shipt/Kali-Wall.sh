@@ -27,3 +27,23 @@
 
 ## 📁 File Structure
 
+
+---
+
+## 🛠️ Tech Used
+
+| Tech        | Description                            |
+|-------------|----------------------------------------|
+| **HTML5**   | Semantic structure                     |
+| **CSS3**    | Cyberpunk effects, gradients, hover    |
+| **JavaScript** | Speech, terminal, dynamic UI       |
+| **Web APIs** | Speech Recognition & Speech Synthesis |
+
+---
+
+## 🚀 Getting Started
+
+1. Clone the repository  
+   ```bash
+   git clone https://github.com/your-username/kaliwall.git
+   cd kaliwall
