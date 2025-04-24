@@ -1,7 +1,8 @@
 <h1 align="center">🚀 KaliWall</h1>
 <p align="center">
-  <img src=![image](https://github.com/user-attachments/assets/f90da792-fdbc-4517-8685-cf8a7fb2bb4b) />
-
+  <img src="https://img.shields.io/badge/HTML-%23E34F26.svg?&style=flat-square&logo=html5&logoColor=white"/>
+  <img src="https://img.shields.io/badge/CSS-%231572B6.svg?&style=flat-square&logo=css3&logoColor=white"/>
+  <img src="https://img.shields.io/badge/JavaScript-%23F7DF1E.svg?&style=flat-square&logo=javascript&logoColor=black"/>
 </p>
 
 <p align="center">
