@@ -5,10 +5,21 @@
     box-sizing: border-box;
 }
 
-/* Body styles with gradient background and custom font */
+/* Particles.js container */
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, #1C2526, #003366);
+}
+
+/* Body styles */
 body {
     font-family: 'Roboto Mono', monospace;
-    background: linear-gradient(135deg, #1C2526, #003366);
+    background: transparent;
     background-attachment: fixed;
     color: #fff;
     line-height: 1.6;
@@ -66,7 +77,6 @@ body {
 }
 
 /* General click effects */
-/* Ripple effect on click */
 .ripple {
     position: fixed;
     width: 60px;
@@ -80,7 +90,6 @@ body {
     animation: rippleEffect 1.2s ease-out forwards;
 }
 
-/* Shockwave effect on click */
 .shockwave {
     position: fixed;
     width: 80px;
@@ -93,7 +102,6 @@ body {
     animation: shockwaveEffect 1.5s ease-out forwards;
 }
 
-/* Spark effect on click */
 .spark {
     position: fixed;
     width: 4px;
@@ -106,7 +114,6 @@ body {
     animation: sparkFade 0.8s ease-out forwards;
 }
 
-/* Particle effect on click */
 .particle {
     position: fixed;
     width: 6px;
@@ -119,8 +126,6 @@ body {
     animation: particleFade 1s ease-out forwards;
 }
 
-/* Click effects for wallpaper images */
-/* Wallpaper ripple effect */
 .wallpaper-ripple {
     position: absolute;
     width: 40px;
@@ -134,7 +139,6 @@ body {
     animation: wallpaperRippleEffect 1s ease-out forwards;
 }
 
-/* Wallpaper particle effect */
 .wallpaper-particle {
     position: absolute;
     width: 5px;
@@ -147,7 +151,6 @@ body {
     animation: wallpaperParticleFade 0.8s ease-out forwards;
 }
 
-/* Hover particle effect */
 .hover-particle {
     position: fixed;
     width: 3px;
@@ -165,7 +168,7 @@ body {
     position: fixed;
     top: 0;
     bottom: 0;
-    width: 50px; /* Reduced width to match screenshot */
+    width: 50px;
     background: rgba(28, 37, 38, 0.8);
     display: flex;
     align-items: center;
@@ -193,19 +196,18 @@ body {
     align-items: center;
     justify-content: center;
     height: 100%;
-    gap: 10px; /* Reduced gap for a more compact look */
+    gap: 10px;
 }
 
 .sidebar-icon {
-    width: 30px; /* Reduced size to match screenshot */
-    height: 30px;
+    width: 35px;
+    height: 35px;
     filter: drop-shadow(0 0 3px #00C4B4);
 }
 
-/* Right sidebar specific styles */
 .right-sidebar {
-    width: 50px; /* Reduced width to match screenshot */
-    padding: 8px; /* Slightly reduced padding */
+    width: 50px;
+    padding: 8px;
     height: 100vh;
     overflow: hidden;
 }
@@ -215,7 +217,7 @@ body {
 }
 
 .kali-logo {
-    width: 30px; /* Reduced size to match screenshot */
+    width: 35px;
     height: auto;
     filter: drop-shadow(0 0 3px #00C4B4);
 }
@@ -223,7 +225,7 @@ body {
 .stats-section {
     text-align: center;
     background: #2E3A3B;
-    padding: 4px; /* Reduced padding for compactness */
+    padding: 4px;
     border: 1px solid #00C4B4;
     border-radius: 5px;
     width: 100%;
@@ -231,13 +233,13 @@ body {
 
 .stats-section p {
     margin: 0;
-    font-size: 8px; /* Reduced font size to match screenshot */
+    font-size: 8px;
     color: #B0BEC5;
     margin-bottom: 2px;
 }
 
 .stats-section .highlight {
-    font-size: 10px; /* Reduced font size to match screenshot */
+    font-size: 10px;
     color: #00C4B4;
     text-shadow: 0 0 3px #00C4B4;
     display: block;
@@ -251,13 +253,13 @@ body {
 
 .developer-info p {
     margin: 0;
-    font-size: 8px; /* Reduced font size to match screenshot */
+    font-size: 8px;
     color: #B0BEC5;
     margin-bottom: 4px;
 }
 
 .developer-info .icon {
-    font-size: 12px; /* Reduced font size to match screenshot */
+    font-size: 12px;
     color: #B0BEC5;
     display: block;
     margin: 4px 0;
@@ -271,7 +273,7 @@ body {
 
 .powered-by {
     text-align: center;
-    font-size: 6px; /* Reduced font size to match screenshot */
+    font-size: 6px;
     width: 100%;
 }
 
@@ -287,10 +289,12 @@ body {
 
 /* Header styles */
 header {
-    padding: 10px; /* Reduced padding for tighter spacing */
+    padding: 10px;
     text-align: center;
-    background: rgba(28, 37, 38, 0.9);
+    background: linear-gradient(135deg, rgba(28, 37, 38, 0.6), rgba(0, 51, 102, 0.6));
     border-bottom: 1px solid #00C4B4;
+    position: relative;
+    z-index: 10;
 }
 
 .logo {
@@ -305,7 +309,6 @@ header {
     height: 35px;
 }
 
-/* Main logo in the header (larger size) */
 .main-logo {
     width: 50px;
     height: 50px;
@@ -323,13 +326,12 @@ header {
     color: #B0BEC5;
 }
 
-/* Navigation styles */
 nav ul {
     list-style: none;
-    margin: 8px 0; /* Reduced margin for tighter spacing */
+    margin: 8px 0;
     display: flex;
     justify-content: center;
-    gap: 10px; /* Reduced gap to match screenshot */
+    gap: 10px;
 }
 
 nav ul li {
@@ -339,7 +341,7 @@ nav ul li {
 .nav-btn {
     text-decoration: none;
     color: #fff;
-    padding: 5px 10px; /* Reduced padding to match screenshot */
+    padding: 5px 10px;
     border: 1px solid #00C4B4;
     border-radius: 5px;
     background: #2E3A3B;
@@ -356,14 +358,16 @@ nav ul li {
     animation: bounce 0.3s ease;
 }
 
-/* Search bar styles */
 .search-bar {
-    margin: 8px 0; /* Reduced margin for tighter spacing */
+    margin: 8px 0;
+    background: linear-gradient(135deg, rgba(46, 58, 59, 0.8), rgba(0, 102, 204, 0.8)); /* Lightened background */
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .search-bar input {
-    padding: 6px; /* Reduced padding to match screenshot */
-    width: 200px; /* Reduced width to match screenshot */
+    padding: 6px;
+    width: 200px;
     background: #2E3A3B;
     border: 1px solid #00C4B4;
     color: #fff;
@@ -372,7 +376,7 @@ nav ul li {
 }
 
 .search-bar button {
-    padding: 6px; /* Reduced padding to match screenshot */
+    padding: 6px;
     background: #00C4B4;
     border: none;
     color: #1C2526;
@@ -380,9 +384,8 @@ nav ul li {
     border-radius: 0 5px 5px 0;
 }
 
-/* Tags section styles */
 .tags {
-    padding: 8px; /* Reduced padding for tighter spacing */
+    padding: 8px;
     text-align: center;
     background: rgba(28, 37, 38, 0.9);
 }
@@ -390,10 +393,10 @@ nav ul li {
 .tag {
     text-decoration: none;
     color: #00C4B4;
-    margin: 0 6px; /* Reduced margin to match screenshot */
-    font-size: 0.7rem; /* Reduced font size to match screenshot */
+    margin: 0 6px;
+    font-size: 0.7rem;
     background: #2E3A3B;
-    padding: 3px 6px; /* Reduced padding to match screenshot */
+    padding: 3px 6px;
     border-radius: 5px;
     transition: all 0.3s;
 }
@@ -408,10 +411,9 @@ nav ul li {
     box-shadow: 0 0 10px #00C4B4;
 }
 
-/* Terminal styles */
 .terminal-container {
-    margin: 10px auto; /* Reduced margin for tighter spacing */
-    max-width: 600px; /* Reduced width to match screenshot */
+    margin: 10px auto;
+    max-width: 600px;
 }
 
 .terminal-window {
@@ -451,7 +453,7 @@ nav ul li {
     padding: 8px;
     font-size: 11px;
     color: #00C4B4;
-    height: 80px; /* Reduced height to match screenshot */
+    height: 80px;
     overflow-y: auto;
 }
 
@@ -470,7 +472,7 @@ nav ul li {
 .speech-controls {
     display: flex;
     justify-content: center;
-    gap: 6px; /* Reduced gap to match screenshot */
+    gap: 6px;
     padding: 4px;
 }
 
@@ -489,25 +491,25 @@ nav ul li {
     color: #1C2526;
 }
 
-/* Gallery styles */
 .gallery {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* Fixed 5-column layout to match screenshot */
-    gap: 10px; /* Reduced gap to match screenshot */
-    padding: 10px; /* Reduced padding for tighter spacing */
-    margin: 0 60px; /* Reduced margin to match screenshot */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
+    padding: 10px;
+    margin: 0 60px;
 }
 
 .wallpaper {
     background: rgba(28, 37, 38, 0.9);
-    padding: 6px; /* Reduced padding to match screenshot */
+    padding: 6px;
     border-radius: 5px;
     text-align: center;
     transition: transform 1s ease;
     will-change: transform;
-    box-shadow: 0 0 10px rgba(0, 196, 180, 0.5); /* Increased shadow for more pronounced effect */
+    box-shadow: 0 0 10px rgba(0, 196, 180, 0.5);
     position: relative;
-    border: 2px solid #00C4B4; /* Added border to match screenshot */
+    border: 2px solid #00C4B4;
+    display: block !important;
 }
 
 .wallpaper:hover {
@@ -522,27 +524,27 @@ nav ul li {
     border: 1px solid #00C4B4;
     transition: transform 0.3s ease;
     box-shadow: 0 0 5px rgba(0, 196, 180, 0.5);
+    display: block !important;
 }
 
 .download-btn {
     display: inline-block;
-    margin-top: 6px; /* Reduced margin to match screenshot */
-    padding: 5px 10px; /* Reduced padding to match screenshot */
-    background: #00C4B4; /* Changed to solid color to match screenshot */
-    color: #1C2526; /* Changed text color to match screenshot */
+    margin-top: 6px;
+    padding: 5px 10px;
+    background: #00C4B4;
+    color: #1C2526;
     text-decoration: none;
     border-radius: 5px;
     font-family: 'Roboto Mono', monospace;
 }
 
 .download-btn:hover {
-    background: #1C2526; /* Changed hover background to match screenshot */
-    color: #00C4B4; /* Changed hover text color to match screenshot */
+    background: #1C2526;
+    color: #00C4B4;
 }
 
-/* Footer styles */
 footer {
-    padding: 10px; /* Reduced padding for tighter spacing */
+    padding: 10px;
     text-align: center;
     background: rgba(28, 37, 38, 0.9);
     border-top: 1px solid #00C4B4;
@@ -551,7 +553,7 @@ footer {
 .footer-content {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 10px; /* Reduced margin for tighter spacing */
+    margin-bottom: 10px;
 }
 
 .footer-section h3 {
@@ -578,6 +580,69 @@ footer {
     font-size: 0.7rem;
 }
 
+/* Media Queries for Mobile */
+@media (max-width: 768px) {
+    .gallery {
+        grid-template-columns: 1fr;
+        margin: 0 10px;
+    }
+    .sidebar {
+        display: none;
+    }
+    .search-bar {
+        display: flex;
+        justify-content: center;
+        margin: 8px auto;
+    }
+    .search-bar input {
+        width: 150px;
+    }
+    .logo {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+    .logo p {
+        font-size: 0.7rem;
+    }
+    nav ul {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    .nav-btn {
+        padding: 3px 6px;
+        font-size: 0.8rem;
+    }
+    .tag {
+        font-size: 0.6rem;
+        padding: 2px 4px;
+    }
+    .terminal-container {
+        max-width: 90%;
+    }
+    .custom-cursor, .cursor-trail, .ripple, .shockwave, .spark, .particle, .hover-particle {
+        display: none; /* Disable heavy animations on mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .logo h1 {
+        font-size: 1.2rem;
+    }
+    .search-bar input {
+        width: 120px;
+    }
+    .nav-btn {
+        font-size: 0.7rem;
+    }
+    .footer-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
 /* Animations */
 @keyframes fadeIn {
     0% { opacity: 0; }
@@ -591,7 +656,7 @@ footer {
 
 @keyframes neonPulse {
     0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px #00C4B4, 0 0 15px #00DDEB; }
-    50% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 15px #00C4B4, 0 0 20px #00DDEB; }
+    ashok50% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 15px #00C4B4, 0 0 20px #00DDEB; }
     100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px #00C4B4, 0 0 15px #00DDEB; }
 }
 
@@ -645,4 +710,13 @@ footer {
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
+}
+
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
 }

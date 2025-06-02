@@ -1,14 +1,13 @@
-// Search functionality for wallpapers
 function searchWallpapers() {
     const input = document.getElementById("searchInput").value.toLowerCase();
     const wallpapers = document.querySelectorAll(".wallpaper");
     wallpapers.forEach(wallpaper => {
-        const altText = wallpaper.querySelector("img").alt.toLowerCase();
-        wallpaper.style.display = altText.includes(input) ? "block" : "none";
+        const imgSrc = wallpaper.querySelector("img").src.toLowerCase();
+        const fileName = imgSrc.split('/').pop();
+        wallpaper.style.display = fileName.includes(input) ? "block" : "none";
     });
 }
 
-// Check if a file exists (for download links)
 function checkFileExists(url, callback) {
     const xhr = new XMLHttpRequest();
     xhr.open("HEAD", url, true);
@@ -17,16 +16,36 @@ function checkFileExists(url, callback) {
             callback(xhr.status === 200);
         }
     };
+    xhr.onerror = function () {
+        callback(false);
+    };
     xhr.send();
 }
 
-// Utility function to get a random integer between min and max
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Main logic when the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
+    // Particles.js initialization
+    particlesJS('particles-js', {
+        particles: {
+            number: { value: 120, density: { enable: true, value_area: 600 } },
+            color: { value: ['#00C4B4', '#FF00FF', '#00DDEB'] },
+            shape: { type: 'circle' },
+            opacity: { value: 0.7, random: true },
+            size: { value: 4, random: true },
+            line_linked: { enable: true, distance: 120, color: '#00C4B4', opacity: 0.5, width: 1.5 },
+            move: { enable: true, speed: 3, direction: 'none', random: true, straight: false, out_mode: 'out', bounce: false }
+        },
+        interactivity: {
+            detect_on: 'canvas',
+            events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+            modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+        },
+        retina_detect: true
+    });
+
     // Terminal elements
     const terminalOutput = document.getElementById("terminal-output");
     const terminalInput = document.getElementById("terminal-input");
@@ -36,18 +55,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const liveUsersElement = document.getElementById("live-users");
     const activeUsersElement = document.getElementById("active-users");
 
-    // Mock commands for the terminal
+    // Terminal commands
     const commands = {
-        "whoami": "root",
+        "whoami": "negan",
         "date": new Date().toString(),
         "pwd": "/root",
         "ls": "dir1 dir2 file1 file2 nmap metasploit aircrack-ng",
         "uname -r": "5.15.0-kali1-amd64",
         "cat /etc/os-release": 'PRETTY_NAME="Kali GNU/Linux Rolling"',
-        "uptime": "14:30:00 up 1 day, 2:15, 1 user",
+        "uptime": "18:30:00 up 1 day, 2:15, 1 user",
         "df -h": "Filesystem Size Used Avail Use% Mounted on /dev/sda1 50G 20G 30G 40% /",
         "free -h": "Mem: 8G 2G 6G 25%",
-        "top": "(Simulated) top - 14:30:00 up 1 day, 2:15, 1 user",
+        "top": "(Simulated) top - 18:30:00 up 1 day, 2:15, 1 user",
         "nmap localhost": "Starting Nmap 7.91 ( https://nmap.org )\nNmap scan report for localhost (127.0.0.1)\nPORT   STATE SERVICE\n22/tcp open  ssh\n80/tcp open  http\nNmap done: 1 IP address scanned in 0.03 seconds",
         "nmap 192.168.1.1": `Starting Nmap 7.91 ( https://nmap.org )\nNmap scan report for 192.168.1.1\nPORT   STATE SERVICE\n${getRandomInt(20, 1000)}/tcp open  unknown\nNmap done: 1 IP address scanned in 0.05 seconds`,
         "metasploit": "msf6 > show options\n[*] Starting Metasploit Framework console...\n[*] Use 'set RHOSTS <target>' to configure target",
@@ -67,19 +86,19 @@ document.addEventListener("DOMContentLoaded", () => {
         "netstat -an": "TCP 0.0.0.0:80 0.0.0.0:0 LISTENING",
         "tasklist": "cmd.exe 1234 Console 1 5,000 K",
         "systeminfo": "OS Name: Microsoft Windows 10 Pro",
-        "echo %USERNAME%": "Admin",
-        "time": "The current time is: 14:30:00.00"
+        "echo %USERNAME%": "Negan",
+        "time": "The current time is: 18:30:00.00"
     };
 
     let commandHistory = [];
     let historyIndex = -1;
 
-    // Focus the terminal input when the terminal window is clicked
+    // Terminal click to focus
     document.querySelector(".terminal-window").addEventListener("click", () => {
         terminalInput.focus();
     });
 
-    // Update the command text as the user types
+    // Terminal input handling
     terminalInput.addEventListener("input", () => {
         const commandText = document.getElementById("command-text");
         if (commandText) {
@@ -87,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Handle command execution on Enter key and history navigation
     terminalInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && terminalInput.value.trim() !== "") {
             const cmd = terminalInput.value.trim().toLowerCase();
@@ -97,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (commandText) {
                 commandText.textContent = "";
             }
-            historyIndex = commandHistory.length; // Reset history index
+            historyIndex = commandHistory.length;
         } else if (e.key === "ArrowUp") {
             if (historyIndex > 0) {
                 historyIndex--;
@@ -126,26 +144,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Function to execute a command and display output
     const executeCommand = (cmd) => {
         let output = commands[cmd] || "Command not found";
         commandHistory.push({ command: cmd, output: output });
-        if (commandHistory.length > 10) { // Limit history to 10 entries
+        if (commandHistory.length > 10) {
             commandHistory = commandHistory.slice(-10);
         }
         if (cmd === "cls") {
             commandHistory = [];
-            terminalOutput.innerHTML = `root@kali:~$ <span id="command-text"></span><span id="cursor">█</span>`;
+            terminalOutput.innerHTML = `Negan :~$ <span id="command-text"></span><span id="cursor">█</span>`;
         } else {
             terminalOutput.innerHTML = "";
             commandHistory.forEach(entry => {
-                terminalOutput.innerHTML += `root@kali:~$ ${entry.command}<br>${entry.output}<br>`;
+                terminalOutput.innerHTML += `Negan :~$ ${entry.command}<br>${entry.output}<br>`;
             });
-            terminalOutput.innerHTML += `root@kali:~$ <span id="command-text"></span><span id="cursor">█</span>`;
+            terminalOutput.innerHTML += `Negan :~$ <span id="command-text"></span><span id="cursor">█</span>`;
         }
         terminalOutput.parentElement.scrollTop = terminalOutput.parentElement.scrollHeight;
 
-        // Speak the command instead of the output
         if ("speechSynthesis" in window && window.speechSynthesis) {
             const utterance = new SpeechSynthesisUtterance(cmd);
             utterance.onerror = () => {
@@ -160,12 +176,12 @@ document.addEventListener("DOMContentLoaded", () => {
         terminalInput.focus();
     };
 
-    // Speech-to-Text (Voice Command)
+    // Speech recognition
     if ("webkitSpeechRecognition" in window) {
         const recognition = new webkitSpeechRecognition();
         recognition.continuous = false;
         recognition.interimResults = false;
-        recognition.lang = "en-US"; // Set language to English (adjust as needed)
+        recognition.lang = "en-US";
 
         micBtn.addEventListener("click", () => {
             try {
@@ -211,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Speech recognition is not supported in this browser. Please use a supported browser like Chrome.");
     }
 
-    // Text-to-Speech (Speak the last command)
+    // Text-to-speech for reading last command
     speakBtn.addEventListener("click", () => {
         const lastCommandEntry = commandHistory[commandHistory.length - 1];
         const lastCommand = lastCommandEntry ? lastCommandEntry.command : "No command to read";
@@ -234,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Update stats every 30 seconds
+    // Stats update
     let totalDownloads = parseInt(totalDownloadsElement.textContent);
     let liveUsers = parseInt(liveUsersElement.textContent);
     let activeUsers = parseInt(activeUsersElement.textContent);
@@ -248,14 +264,13 @@ document.addEventListener("DOMContentLoaded", () => {
         activeUsersElement.textContent = activeUsers;
     }, 30000);
 
-    // Add click event to download buttons to check file availability
+    // Download button functionality
     document.querySelectorAll(".download-btn").forEach(btn => {
         btn.addEventListener("click", (e) => {
-            e.preventDefault(); // Prevent default download action
+            e.preventDefault();
             const url = btn.getAttribute("href");
             checkFileExists(url, (exists) => {
                 if (exists) {
-                    // If file exists, trigger the download
                     const link = document.createElement("a");
                     link.href = url;
                     link.download = "";
@@ -269,7 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Navigation button interactivity (scroll and rotate wallpapers)
+    // Nav buttons scroll effect
     const navButtons = document.querySelectorAll(".nav-btn");
     navButtons.forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -282,72 +297,49 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Tag interactivity (scroll and rotate wallpapers)
+    // Tags scroll effect
     const tags = document.querySelectorAll(".tag");
     tags.forEach(tag => {
         tag.addEventListener("click", (e) => {
             e.preventDefault();
             const scrollAmount = tag.textContent === "#DarkTheme" ? 300 : getRandomInt(100, 500) * (Math.random() < 0.5 ? -1 : 1);
             window.scrollBy({ top: scrollAmount, behavior: "smooth" });
-            document.querySelectorAll(".wallpaper").forEach(card => {
-                card.style.transform = `rotate(${getRandomInt(-5, 5)}deg)`;
-                // Reset rotation immediately after the 1-second animation
-                setTimeout(() => {
-                    card.style.transform = "rotate(0deg)";
-                }, 1000);
-            });
         });
     });
 
-    // Custom Cursor Logic
+    // Custom cursor and effects
     const cursor = document.querySelector(".custom-cursor");
-    const trailCount = 6; // Number of trails
-    const trails = [];
-    for (let i = 0; i < trailCount; i++) {
-        const trail = document.createElement("div");
-        trail.className = "cursor-trail";
-        document.body.appendChild(trail);
-        trails.push(trail);
-    }
+    const trailLimit = 5;
+    let trailCount = 0;
 
-    let angle = 0;
-    let lastX = 0, lastY = 0;
-    let isAnimating = false;
-
-    // Animate the cursor and trails
-    const animateCursor = (e) => {
-        if (!isAnimating) return;
-        const x = e.clientX;
-        const y = e.clientY;
-        cursor.style.left = x + "px";
-        cursor.style.top = y + "px";
-        angle += 0.02; // Slower trail motion
-        trails.forEach((trail, index) => {
-            const radius = 15 + index * 8;
-            const trailAngle = angle + index * (2 * Math.PI / trailCount);
-            const offsetX = Math.cos(trailAngle) * radius + 20 * Math.sin(angle + index);
-            const offsetY = Math.sin(trailAngle) * radius + 20 * Math.cos(angle + index);
-            trail.style.left = (x + offsetX) + "px";
-            trail.style.top = (y + offsetY) + "px";
-            trail.style.opacity = 0.4 - (index * 0.05);
-            trail.style.transform = `scale(${0.8 - index * 0.1})`;
-        });
-        lastX = x;
-        lastY = y;
-        requestAnimationFrame(() => animateCursor(e));
-    };
-
-    // Start cursor animation on mouse move
     document.addEventListener("mousemove", (e) => {
-        if (!isAnimating) {
-            isAnimating = true;
-            requestAnimationFrame(() => animateCursor(e));
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+
+        if (trailCount < trailLimit) {
+            const trail = document.createElement("div");
+            trail.className = "cursor-trail";
+            trail.style.left = e.clientX + "px";
+            trail.style.top = e.clientY + "px";
+            document.body.appendChild(trail);
+            trailCount++;
+            setTimeout(() => {
+                trail.remove();
+                trailCount--;
+            }, 300);
         }
+
+        const hoverParticle = document.createElement("div");
+        hoverParticle.className = "hover-particle";
+        hoverParticle.style.left = e.clientX + "px";
+        hoverParticle.style.top = e.clientY + "px";
+        hoverParticle.style.setProperty('--tx', `${getRandomInt(-20, 20)}px`);
+        hoverParticle.style.setProperty('--ty', `${getRandomInt(-20, 20)}px`);
+        document.body.appendChild(hoverParticle);
+        setTimeout(() => hoverParticle.remove(), 600);
     });
 
-    // General click effects (ripple, shockwave, sparks, particles)
-    document.addEventListener("mousedown", (e) => {
-        // Ripple effect
+    document.addEventListener("click", (e) => {
         const ripple = document.createElement("div");
         ripple.className = "ripple";
         ripple.style.left = e.clientX + "px";
@@ -355,7 +347,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.appendChild(ripple);
         setTimeout(() => ripple.remove(), 1200);
 
-        // Shockwave effect
         const shockwave = document.createElement("div");
         shockwave.className = "shockwave";
         shockwave.style.left = e.clientX + "px";
@@ -363,45 +354,36 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.appendChild(shockwave);
         setTimeout(() => shockwave.remove(), 1500);
 
-        // Sparks effect
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 5; i++) {
             const spark = document.createElement("div");
             spark.className = "spark";
             spark.style.left = e.clientX + "px";
             spark.style.top = e.clientY + "px";
-            spark.style.setProperty("--tx", getRandomInt(-30, 30) + "px");
-            spark.style.setProperty("--ty", getRandomInt(-30, 30) + "px");
+            spark.style.setProperty('--tx', `${getRandomInt(-30, 30)}px`);
+            spark.style.setProperty('--ty', `${getRandomInt(-30, 30)}px`);
             document.body.appendChild(spark);
             setTimeout(() => spark.remove(), 800);
         }
 
-        // Particles effect
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 3; i++) {
             const particle = document.createElement("div");
             particle.className = "particle";
             particle.style.left = e.clientX + "px";
             particle.style.top = e.clientY + "px";
-            const angle = (2 * Math.PI * i) / 12;
-            const distance = 40;
-            const tx = distance * Math.cos(angle);
-            const ty = distance * Math.sin(angle);
-            particle.style.setProperty("--tx", tx + "px");
-            particle.style.setProperty("--ty", ty + "px");
+            particle.style.setProperty('--tx', `${getRandomInt(-40, 40)}px`);
+            particle.style.setProperty('--ty', `${getRandomInt(-40, 40)}px`);
             document.body.appendChild(particle);
             setTimeout(() => particle.remove(), 1000);
         }
     });
 
-    // Click effect on wallpaper images
-    const wallpapers = document.querySelectorAll(".wallpaper");
-    wallpapers.forEach(wallpaper => {
-        wallpaper.addEventListener("mousedown", (e) => {
-            // Calculate position relative to the wallpaper element
+    // Wallpaper hover and click effects
+    document.querySelectorAll(".wallpaper").forEach(wallpaper => {
+        wallpaper.addEventListener("click", (e) => {
             const rect = wallpaper.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
-            // Wallpaper ripple effect
             const ripple = document.createElement("div");
             ripple.className = "wallpaper-ripple";
             ripple.style.left = x + "px";
@@ -409,56 +391,16 @@ document.addEventListener("DOMContentLoaded", () => {
             wallpaper.appendChild(ripple);
             setTimeout(() => ripple.remove(), 1000);
 
-            // Wallpaper particles effect
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 3; i++) {
                 const particle = document.createElement("div");
                 particle.className = "wallpaper-particle";
                 particle.style.left = x + "px";
                 particle.style.top = y + "px";
-                const angle = (2 * Math.PI * i) / 6;
-                const distance = 20;
-                const tx = distance * Math.cos(angle);
-                const ty = distance * Math.sin(angle);
-                particle.style.setProperty("--tx", tx + "px");
-                particle.style.setProperty("--ty", ty + "px");
+                particle.style.setProperty('--tx', `${getRandomInt(-20, 20)}px`);
+                particle.style.setProperty('--ty', `${getRandomInt(-20, 20)}px`);
                 wallpaper.appendChild(particle);
                 setTimeout(() => particle.remove(), 800);
             }
         });
-
-        // 3D tilt effect on hover
-        wallpaper.addEventListener("mousemove", (e) => {
-            const rect = wallpaper.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            const rotateX = (y / rect.height) * 15; // Increased tilt angle
-            const rotateY = -(x / rect.width) * 15; // Increased tilt angle
-            wallpaper.querySelector("img").style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-
-        // Reset transform when mouse leaves
-        wallpaper.addEventListener("mouseleave", () => {
-            wallpaper.querySelector("img").style.transform = "rotateX(0deg) rotateY(0deg)";
-        });
     });
-
-    // Hover particle effect on interactive elements
-    const interactiveElements = document.querySelectorAll(".nav-btn, .tag, .wallpaper, .download-btn, .speech-controls button");
-    interactiveElements.forEach(element => {
-        element.addEventListener("mousemove", (e) => {
-            for (let i = 0; i < 3; i++) {
-                const particle = document.createElement("div");
-                particle.className = "hover-particle";
-                particle.style.left = e.clientX + "px";
-                particle.style.top = e.clientY + "px";
-                particle.style.setProperty("--tx", getRandomInt(-15, 15) + "px");
-                particle.style.setProperty("--ty", getRandomInt(-15, 15) + "px");
-                document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 600);
-            }
-        });
-    });
-
-    // Focus the terminal input on page load
-    terminalInput.focus();
 });
