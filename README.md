@@ -1,4 +1,4 @@
-<h1 align="center">🚀 KaliWall</h1>
+<h1 align="center">🚀 KaliWall.</h1>
 <p align="center">
   <img src="https://img.shields.io/badge/HTML-%23E34F26.svg?&style=flat-square&logo=html5&logoColor=white"/>
   <img src="https://img.shields.io/badge/CSS-%231572B6.svg?&style=flat-square&logo=css3&logoColor=white"/>
