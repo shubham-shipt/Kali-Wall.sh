@@ -11,32 +11,38 @@
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
     
-    <!-- Open Graph Meta Tags -->
+    <!-- Open Graph Meta Tags (WhatsApp, Facebook, LinkedIn) -->
     <meta property="og:title" content="KaliWall - Premium Kali Linux Wallpapers">
-    <meta property="og:description" content="Upload, share, and download premium Kali Linux wallpapers. Free worldwide access.">
-    <meta property="og:image" content="https://shivam-the.github.io/kaliwall/Wall-Kali/180.png">
+    <meta property="og:description" content="Upload, share, and download premium Kali Linux wallpapers. Free worldwide access with Firebase storage.">
+    <meta property="og:image" content="https://shivam-the.github.io/kaliwall/assets/web-logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://shivam-the.github.io/kaliwall/">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KaliWall">
     
-    <!-- Twitter Card -->
+    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="KaliWall - Premium Kali Linux Wallpapers">
     <meta name="twitter:description" content="Upload and download premium Kali Linux wallpapers worldwide.">
-    <meta name="twitter:image" content="https://shivam-the.github.io/kaliwall/Wall-Kali/180.png">
+    <meta name="twitter:image" content="https://shivam-the.github.io/kaliwall/assets/web-logo.png">
+    <meta name="twitter:site" content="@Om_singh_213">
     
     <link rel="canonical" href="https://shivam-the.github.io/kaliwall/">
     
     <title>KaliWall - Premium Kali Linux Wallpapers | Free Download & Upload</title>
-    <link rel="icon" type="image/x-icon" href="Wall-Kali/180.png">
+    <link rel="icon" type="image/png" href="assets/web-logo.png">
+    <link rel="apple-touch-icon" href="assets/web-logo.png">
     
-    <!-- Schema.org -->
+    <!-- Schema.org Markup -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "KaliWall",
       "url": "https://shivam-the.github.io/kaliwall/",
-      "description": "Premium Kali Linux wallpapers collection",
+      "description": "Premium Kali Linux wallpapers collection with Firebase storage",
+      "image": "https://shivam-the.github.io/kaliwall/assets/web-logo.png",
       "author": {
         "@type": "Person",
         "name": "Shubham Singh"
@@ -46,6 +52,11 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Firebase CDN - Correct Compat Version for HTML -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
     
     <style>
         :root {
@@ -82,7 +93,6 @@
             cursor: default;
         }
 
-        /* ========== CUSTOM CURSOR - DESKTOP ONLY ========== */
         .custom-cursor {
             position: fixed;
             width: 12px;
@@ -97,7 +107,6 @@
             display: none;
         }
 
-        /* Show cursor only on desktop with mouse */
         @media (hover: hover) and (pointer: fine) {
             body * {
                 cursor: none !important;
@@ -108,7 +117,6 @@
             }
         }
 
-        /* Hide cursor on mobile/touch devices */
         @media (hover: none) and (pointer: coarse) {
             .custom-cursor {
                 display: none !important;
@@ -161,7 +169,6 @@
             letter-spacing: 3px;
         }
 
-        /* ========== RIGHT SIDEBAR - DESKTOP/LAPTOP ONLY ========== */
         .sidebar {
             position: fixed;
             top: 0;
@@ -207,6 +214,8 @@
             height: 60px;
             filter: drop-shadow(0 0 15px var(--primary));
             animation: float 3s ease-in-out infinite;
+            border-radius: 50%;
+            object-fit: contain;
         }
 
         .stats-section {
@@ -265,7 +274,6 @@
             transform: scale(1.3);
         }
 
-        /* ========== HEADER ========== */
         header {
             padding: 35px 20px;
             text-align: center;
@@ -290,12 +298,13 @@
             margin-bottom: 30px;
         }
 
-        /* EXACT KALI LINUX DRAGON LOGO */
         .kali-logo {
             width: 120px;
             height: 120px;
             filter: drop-shadow(0 0 30px var(--primary)) drop-shadow(0 0 50px var(--secondary));
             animation: float 4s ease-in-out infinite;
+            border-radius: 15px;
+            object-fit: contain;
         }
 
         .logo-text {
@@ -360,7 +369,6 @@
             box-shadow: 0 10px 30px rgba(0, 196, 180, 0.5);
         }
 
-        /* UNIQUE UPLOAD BUTTON */
         .nav-btn.upload-btn-special {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             border: 3px solid var(--accent);
@@ -771,6 +779,23 @@
             display: block;
         }
 
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 196, 180, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
         footer {
             padding: 50px 20px 30px;
             text-align: center;
@@ -790,6 +815,8 @@
             margin: 0 auto 25px;
             filter: drop-shadow(0 0 20px var(--primary));
             animation: float 4s ease-in-out infinite;
+            border-radius: 50%;
+            object-fit: contain;
         }
 
         .footer-content {
@@ -952,38 +979,22 @@
     <!-- Right Sidebar -->
     <div class="sidebar">
         <div class="sidebar-content">
-            <!-- Kali Dragon Logo SVG (sidebar) -->
-            <svg class="sidebar-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="sideGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#00C4B4;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#00ff9f;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <!-- Dragon head -->
-                <path d="M50 20 Q35 30, 35 45 Q35 55, 45 60 L50 65" stroke="url(#sideGrad)" stroke-width="4" fill="none" opacity="0.9"/>
-                <!-- Wing lines -->
-                <line x1="35" y1="35" x2="20" y2="25" stroke="url(#sideGrad)" stroke-width="2" opacity="0.8"/>
-                <line x1="35" y1="40" x2="18" y2="35" stroke="url(#sideGrad)" stroke-width="2" opacity="0.8"/>
-                <line x1="35" y1="45" x2="20" y2="45" stroke="url(#sideGrad)" stroke-width="2" opacity="0.8"/>
-                <!-- Eye -->
-                <circle cx="42" cy="38" r="3" fill="#00ff9f"/>
-            </svg>
+            <img src="assets/web-logo.png" alt="KaliWall Logo" class="sidebar-logo">
 
             <div class="stats-section">
                 <p>Downloads</p>
                 <span class="highlight" id="total-downloads">2,547</span>
                 <p>Live Users</p>
                 <span class="highlight" id="live-users">24</span>
-                <p>Total Users</p>
-                <span class="highlight" id="active-users">1,892</span>
+                <p>Total Items</p>
+                <span class="highlight" id="active-users">0</span>
             </div>
 
             <div class="developer-info">
                 <p>Connect</p>
-                <a href="https://instagram.com/om_singh_213" class="icon"><i class="fab fa-instagram"></i></a>
-                <a href="https://github.com/shubham-shipt" class="icon"><i class="fab fa-github"></i></a>
-                <a href="https://linkedin.com/in/shubham-sh" class="icon"><i class="fab fa-linkedin"></i></a>
+                <a href="https://instagram.com/om_singh_213" class="icon" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/shubham-shipt" class="icon" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/shubham-sh" class="icon" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
                 <a href="mailto:shubhamscript@gmail.com" class="icon"><i class="fas fa-envelope"></i></a>
             </div>
         </div>
@@ -992,48 +1003,7 @@
     <!-- Header -->
     <header>
         <div class="logo-section">
-            <!-- EXACT KALI LINUX DRAGON LOGO STYLE -->
-            <svg class="kali-logo" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="kaliGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#00C4B4;stop-opacity:1" />
-                        <stop offset="50%" style="stop-color:#00DDEB;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#00ff9f;stop-opacity:1" />
-                    </linearGradient>
-                    <filter id="dragonGlow">
-                        <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
-                        <feMerge>
-                            <feMergeNode in="coloredBlur"/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                </defs>
-                
-                <!-- Dragon body curve (like Kali Linux logo) -->
-                <path d="M75 30 Q50 40, 50 60 Q50 75, 60 85 Q65 90, 70 92" 
-                      stroke="url(#kaliGrad)" stroke-width="8" fill="none" 
-                      stroke-linecap="round" opacity="0.9" filter="url(#dragonGlow)"/>
-                
-                <!-- Dragon wing lines (signature Kali style) -->
-                <line x1="50" y1="45" x2="30" y2="30" stroke="url(#kaliGrad)" stroke-width="3" stroke-linecap="round" opacity="0.85" filter="url(#dragonGlow)"/>
-                <line x1="50" y1="52" x2="25" y2="45" stroke="url(#kaliGrad)" stroke-width="3" stroke-linecap="round" opacity="0.85" filter="url(#dragonGlow)"/>
-                <line x1="50" y1="59" x2="28" y2="60" stroke="url(#kaliGrad)" stroke-width="3" stroke-linecap="round" opacity="0.85" filter="url(#dragonGlow)"/>
-                <line x1="52" y1="66" x2="30" y2="75" stroke="url(#kaliGrad)" stroke-width="3" stroke-linecap="round" opacity="0.85" filter="url(#dragonGlow)"/>
-                
-                <!-- Dragon head/eye -->
-                <circle cx="65" cy="50" r="5" fill="url(#kaliGrad)" opacity="0.9" filter="url(#dragonGlow)"/>
-                <circle cx="66" cy="49" r="2" fill="#00ff9f" filter="url(#dragonGlow)"/>
-                
-                <!-- Dragon horn/spike -->
-                <line x1="70" y1="35" x2="75" y2="20" stroke="url(#kaliGrad)" stroke-width="4" stroke-linecap="round" opacity="0.9" filter="url(#dragonGlow)"/>
-                
-                <!-- Dragon tail end -->
-                <path d="M70 92 L75 95 L72 100" stroke="url(#kaliGrad)" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.9" filter="url(#dragonGlow)"/>
-                
-                <!-- Outer glow circle -->
-                <circle cx="60" cy="60" r="50" fill="none" stroke="url(#kaliGrad)" stroke-width="2" opacity="0.3"/>
-            </svg>
-
+            <img src="assets/web-logo.png" alt="KaliWall - Premium Kali Linux Wallpapers" class="kali-logo">
             <h1 class="logo-text">KALI-WALL</h1>
         </div>
         
@@ -1059,6 +1029,7 @@
             <a class="tag" data-category="tech" onclick="filterByTag('tech', event); return false;">#Tech</a>
             <a class="tag" data-category="hacking" onclick="filterByTag('hacking', event); return false;">#Hacking</a>
             <a class="tag" data-category="security" onclick="filterByTag('security', event); return false;">#Security</a>
+            <a class="tag" data-category="uploaded" onclick="filterByTag('uploaded', event); return false;">#Community</a>
         </div>
     </header>
 
@@ -1068,6 +1039,7 @@
             <button class="filter-btn" onclick="filter4K(this)"><i class="fas fa-image"></i> 4K</button>
             <button class="filter-btn" onclick="filterDark(this)"><i class="fas fa-moon"></i> Dark</button>
             <button class="filter-btn" onclick="filterPopular(this)"><i class="fas fa-fire"></i> Popular</button>
+            <button class="filter-btn" onclick="filterCommunity(this)"><i class="fas fa-users"></i> Community</button>
         </div>
         <div class="view-toggle">
             <button class="view-btn active" onclick="setView('grid', this)" aria-label="Grid view"><i class="fas fa-th"></i></button>
@@ -1088,7 +1060,7 @@
     <div class="modal" id="uploadModal" role="dialog" aria-labelledby="uploadModalTitle" aria-hidden="true">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="uploadModalTitle"><i class="fas fa-cloud-upload-alt"></i> Upload to Worldwide Gallery</h2>
+                <h2 id="uploadModalTitle"><i class="fas fa-cloud-upload-alt"></i> Upload to Firebase</h2>
                 <span class="close-modal" onclick="closeUploadModal()" aria-label="Close modal">&times;</span>
             </div>
             <form class="upload-form" id="uploadForm">
@@ -1112,9 +1084,12 @@
                 <button type="button" class="upload-btn" onclick="document.getElementById('fileInput').click()">
                     <i class="fas fa-folder-open"></i> Choose File
                 </button>
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
                 <div class="upload-status" id="uploadStatus"></div>
                 <button type="submit" class="upload-btn" style="background: linear-gradient(135deg, var(--accent), var(--primary));">
-                    <i class="fas fa-paper-plane"></i> Upload to Gallery (Worldwide Update)
+                    <i class="fas fa-paper-plane"></i> Upload to Firebase (Worldwide)
                 </button>
             </form>
         </div>
@@ -1122,25 +1097,12 @@
 
     <!-- Footer -->
     <footer>
-        <!-- Kali Dragon Logo (footer) -->
-        <svg class="footer-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="footerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#00C4B4;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#00ff9f;stop-opacity:1" />
-                </linearGradient>
-            </defs>
-            <path d="M50 20 Q35 30, 35 45 Q35 55, 45 60 L50 65" stroke="url(#footerGrad)" stroke-width="4" fill="none" opacity="0.9"/>
-            <line x1="35" y1="35" x2="20" y2="25" stroke="url(#footerGrad)" stroke-width="2" opacity="0.8"/>
-            <line x1="35" y1="40" x2="18" y2="35" stroke="url(#footerGrad)" stroke-width="2" opacity="0.8"/>
-            <line x1="35" y1="45" x2="20" y2="45" stroke="url(#footerGrad)" stroke-width="2" opacity="0.8"/>
-            <circle cx="42" cy="38" r="3" fill="#00ff9f"/>
-        </svg>
+        <img src="assets/web-logo.png" alt="KaliWall Logo" class="footer-logo">
 
         <div class="footer-content">
             <div class="footer-section">
                 <h3>About KaliWall</h3>
-                <p>Premium Kali Linux wallpapers and media collection for cybersecurity professionals worldwide. Hosted on GitHub Pages.</p>
+                <p>Premium Kali Linux wallpapers and media collection powered by Firebase. Upload and share with the worldwide cybersecurity community.</p>
             </div>
             <div class="footer-section">
                 <h3>Quick Links</h3>
@@ -1160,7 +1122,7 @@
 
         <div class="footer-bottom">
             <p>© 2025 KaliWall | Developed by <a href="https://github.com/shivam-the" target="_blank" rel="noopener">Shubham Singh (@shivam-the)</a></p>
-            <p style="margin-top: 10px; font-size: 0.85rem;">Hosted on <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> | SEO Optimized | Current Time (UTC): 2025-11-24 08:32:26</p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">Powered by <a href="https://firebase.google.com/" target="_blank" rel="noopener">Firebase</a> | Hosted on <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> | User: shivam-the | UTC: 2025-11-24 10:05:01</p>
         </div>
     </footer>
 
@@ -1169,8 +1131,26 @@
     </button>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
     <script>
-        // Logging System
+        // ========== FIREBASE CONFIGURATION ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyB9xR559RFvOoK3nnDRmluoVA5gIZfvcTY",
+            authDomain: "kali-wall.firebaseapp.com",
+            projectId: "kali-wall",
+            storageBucket: "kali-wall.appspot.com",
+            messagingSenderId: "453999076336",
+            appId: "1:453999076336:web:7d4206e66500f0a794b335",
+            measurementId: "G-QVG0Q65JGH"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        
+        console.log('%c🔥 Firebase Connected!', 'color: #FF6B00; font-size: 16px; font-weight: bold;');
+        
+        // ========== LOGGING ==========
         class KaliWallLogger {
             constructor() {
                 this.logs = JSON.parse(localStorage.getItem('kaliwall_logs')) || [];
@@ -1201,73 +1181,182 @@
         }
 
         const logger = new KaliWallLogger();
-        logger.log('Page Loaded', { url: window.location.href, time: '2025-11-24 08:32:26 UTC' });
+        logger.log('Page Loaded', { url: window.location.href, time: '2025-11-24 10:05:01', user: 'shivam-the' });
 
         const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-        let allWallpapers = JSON.parse(localStorage.getItem('kaliwall_wallpapers')) || [
-            { id: 4, src: 'Wall-Kali/4.png', category: 'kalilinux', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 6, src: 'Wall-Kali/6.png', category: 'dark', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 11, src: 'Wall-Kali/11.png', category: 'security', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 14, src: 'Wall-Kali/14.jpg', category: 'dark tech', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 16, src: 'Wall-Kali/16.png', category: 'cyberpunk', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 18, src: 'Wall-Kali/18.png', category: 'hacking', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 20, src: 'Wall-Kali/20.png', category: 'tech', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 21, src: 'Wall-Kali/21.jpg', category: 'dark', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 22, src: 'Wall-Kali/22.png', category: 'kalilinux', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 23, src: 'Wall-Kali/23.png', category: 'cyberpunk', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 24, src: 'Wall-Kali/24.png', category: 'tech', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 25, src: 'Wall-Kali/25.jpg', category: 'security', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 26, src: 'Wall-Kali/26.jpg', category: 'dark', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 28, src: 'Wall-Kali/28.png', category: 'hacking', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 29, src: 'Wall-Kali/29.png', category: 'cyberpunk', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 33, src: 'Wall-Kali/33.png', category: 'tech', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 37, src: 'Wall-Kali/37.png', category: 'kalilinux', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 47, src: 'Wall-Kali/47.png', category: 'dark', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 48, src: 'Wall-Kali/48.png', category: 'hacking', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 49, src: 'Wall-Kali/49.png', category: 'security', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 54, src: 'Wall-Kali/54.png', category: 'cyberpunk', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 55, src: 'Wall-Kali/55.png', category: 'tech', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 57, src: 'Wall-Kali/57.png', category: 'dark', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 58, src: 'Wall-Kali/58.png', category: 'kalilinux dark', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 59, src: 'Wall-Kali/59.png', category: 'cyberpunk', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 63, src: 'Wall-Kali/63.png', category: 'hacking', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 65, src: 'Wall-Kali/65.svg', category: 'tech', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 67, src: 'Wall-Kali/67.svg', category: 'kalilinux', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 68, src: 'Wall-Kali/68.svg', category: 'security', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 70, src: 'Wall-Kali/70.svg', category: 'dark', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 82, src: 'Wall-Kali/82.png', category: 'tech', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 83, src: 'Wall-Kali/83.png', category: 'dark', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 84, src: 'Wall-Kali/84.png', category: 'cyberpunk', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 85, src: 'Wall-Kali/85.png', category: 'hacking', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 89, src: 'Wall-Kali/89.png', category: 'security', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 90, src: 'Wall-Kali/90.png', category: 'kalilinux', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 91, src: 'Wall-Kali/91.png', category: 'dark', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 92, src: 'Wall-Kali/92.png', category: 'tech', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 94, src: 'Wall-Kali/94.png', category: 'cyberpunk', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 95, src: 'Wall-Kali/95.png', category: 'hacking', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 99, src: 'Wall-Kali/99.png', category: 'kalilinux', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 100, src: 'Wall-Kali/100.png', category: 'security', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 104, src: 'Wall-Kali/104.png', category: 'dark', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 106, src: 'Wall-Kali/106.png', category: 'tech', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 109, src: 'Wall-Kali/109.png', category: 'cyberpunk', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 110, src: 'Wall-Kali/110.png', category: 'hacking', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 111, src: 'Wall-Kali/111.png', category: 'kalilinux', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 112, src: 'Wall-Kali/112.png', category: 'security', popular: false, type: 'image', uploader: '', location: '' },
-            { id: 114, src: 'Wall-Kali/114.png', category: 'dark', popular: true, type: 'image', uploader: '', location: '' },
-            { id: 157, src: 'Wall-Kali/157.png', category: 'hacking', popular: true, type: 'image', uploader: '', location: '' }
+        // ========== DEFAULT WALLPAPERS ==========
+        const defaultWallpapers = [
+            { id: 4, src: 'Wall-Kali/4.png', category: 'kalilinux', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 6, src: 'Wall-Kali/6.png', category: 'dark', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 11, src: 'Wall-Kali/11.png', category: 'security', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 14, src: 'Wall-Kali/14.jpg', category: 'dark tech', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 16, src: 'Wall-Kali/16.png', category: 'cyberpunk', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 18, src: 'Wall-Kali/18.png', category: 'hacking', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 20, src: 'Wall-Kali/20.png', category: 'tech', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 21, src: 'Wall-Kali/21.jpg', category: 'dark', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 22, src: 'Wall-Kali/22.png', category: 'kalilinux', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 23, src: 'Wall-Kali/23.png', category: 'cyberpunk', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 24, src: 'Wall-Kali/24.png', category: 'tech', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 25, src: 'Wall-Kali/25.jpg', category: 'security', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 26, src: 'Wall-Kali/26.jpg', category: 'dark', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 28, src: 'Wall-Kali/28.png', category: 'hacking', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 29, src: 'Wall-Kali/29.png', category: 'cyberpunk', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 33, src: 'Wall-Kali/33.png', category: 'tech', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 37, src: 'Wall-Kali/37.png', category: 'kalilinux', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 47, src: 'Wall-Kali/47.png', category: 'dark', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 48, src: 'Wall-Kali/48.png', category: 'hacking', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 49, src: 'Wall-Kali/49.png', category: 'security', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 54, src: 'Wall-Kali/54.png', category: 'cyberpunk', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 55, src: 'Wall-Kali/55.png', category: 'tech', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 57, src: 'Wall-Kali/57.png', category: 'dark', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 58, src: 'Wall-Kali/58.png', category: 'kalilinux dark', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 59, src: 'Wall-Kali/59.png', category: 'cyberpunk', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 63, src: 'Wall-Kali/63.png', category: 'hacking', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 65, src: 'Wall-Kali/65.svg', category: 'tech', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 67, src: 'Wall-Kali/67.svg', category: 'kalilinux', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 68, src: 'Wall-Kali/68.svg', category: 'security', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 70, src: 'Wall-Kali/70.svg', category: 'dark', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 82, src: 'Wall-Kali/82.png', category: 'tech', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 83, src: 'Wall-Kali/83.png', category: 'dark', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 84, src: 'Wall-Kali/84.png', category: 'cyberpunk', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 85, src: 'Wall-Kali/85.png', category: 'hacking', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 89, src: 'Wall-Kali/89.png', category: 'security', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 90, src: 'Wall-Kali/90.png', category: 'kalilinux', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 91, src: 'Wall-Kali/91.png', category: 'dark', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 92, src: 'Wall-Kali/92.png', category: 'tech', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 94, src: 'Wall-Kali/94.png', category: 'cyberpunk', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 95, src: 'Wall-Kali/95.png', category: 'hacking', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 99, src: 'Wall-Kali/99.png', category: 'kalilinux', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 100, src: 'Wall-Kali/100.png', category: 'security', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 104, src: 'Wall-Kali/104.png', category: 'dark', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 106, src: 'Wall-Kali/106.png', category: 'tech', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 109, src: 'Wall-Kali/109.png', category: 'cyberpunk', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 110, src: 'Wall-Kali/110.png', category: 'hacking', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 111, src: 'Wall-Kali/111.png', category: 'kalilinux', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 112, src: 'Wall-Kali/112.png', category: 'security', popular: false, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 114, src: 'Wall-Kali/114.png', category: 'dark', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' },
+            { id: 157, src: 'Wall-Kali/157.png', category: 'hacking', popular: true, type: 'image', uploader: 'KaliWall', location: 'Official' }
         ];
 
+        let allWallpapers = [];
         let displayedCount = 0;
         const LOAD_INCREMENT = 12;
 
-        function saveWallpapers() {
-            localStorage.setItem('kaliwall_wallpapers', JSON.stringify(allWallpapers));
-            logger.log('Wallpapers Saved', { total: allWallpapers.length });
+        // ========== LOAD FIREBASE WALLPAPERS ==========
+        async function loadFirebaseWallpapers() {
+            const wallpapers = [];
+            try {
+                logger.log('Loading from Firebase');
+                console.log('%c🔥 Fetching from Firebase...', 'color: #FF6B00; font-size: 14px;');
+                
+                const snapshot = await db.collection("wallpapers")
+                    .orderBy("uploadDate", "desc")
+                    .limit(100)
+                    .get();
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    wallpapers.push({
+                        ...data,
+                        firebaseId: doc.id,
+                        src: data.src || data.url,
+                        id: data.id || doc.id
+                    });
+                });
+                
+                console.log(`%c✅ Loaded ${wallpapers.length} from Firebase`, 'color: #00ff9f; font-size: 14px; font-weight: bold;');
+                logger.log('Firebase Load Success', { count: wallpapers.length });
+                
+                return wallpapers;
+                
+            } catch (error) {
+                console.error('%c🔥 Firebase Error:', 'color: #ff4444; font-size: 14px;', error);
+                logger.log('Firebase Load Error', { error: error.message });
+                return [];
+            }
         }
 
-               function loadWallpapers(append = false) {
+        // ========== UPLOAD TO FIREBASE ==========
+        async function uploadToFirebase(file, uploaderName, uploaderLocation) {
+            try {
+                logger.log('Firebase Upload Started', { filename: file.name, size: file.size });
+                
+                const timestamp = Date.now();
+                const safeFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+                const fileName = `uploads/${timestamp}_${safeFileName}`;
+                
+                const storageRef = storage.ref(fileName);
+                const uploadTask = storageRef.put(file);
+                
+                const progressBar = document.getElementById('progressBar');
+                const progressFill = document.getElementById('progressFill');
+                progressBar.style.display = 'block';
+                
+                                
+                uploadTask.on('state_changed', 
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        progressFill.style.width = progress + '%';
+                        showUploadStatus(`⏳ Uploading: ${progress.toFixed(0)}%`, 'success');
+                        console.log(`Upload progress: ${progress.toFixed(2)}%`);
+                    },
+                    (error) => {
+                        logger.log('Firebase Upload Error', { error: error.message });
+                        showUploadStatus('❌ Upload failed: ' + error.message, 'error');
+                        progressBar.style.display = 'none';
+                    },
+                    async () => {
+                        const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                        logger.log('Firebase Upload Complete', { url: downloadURL });
+                        
+                        const fileType = file.type.startsWith('image') ? 'image' : 
+                                       file.type.startsWith('video') ? 'video' : 'audio';
+                        
+                        const wallpaperData = {
+                            id: timestamp,
+                            src: downloadURL,
+                            category: 'uploaded',
+                            popular: false,
+                            type: fileType,
+                            uploader: uploaderName,
+                            location: uploaderLocation,
+                            uploadDate: new Date().toISOString(),
+                            filename: file.name,
+                            size: file.size,
+                            uploadedBy: 'shivam-the'
+                        };
+                        
+                        await db.collection('wallpapers').doc(timestamp.toString()).set(wallpaperData);
+                        
+                        logger.log('Saved to Firestore', { id: timestamp });
+                        
+                        allWallpapers.unshift(wallpaperData);
+                        loadWallpapers(false);
+                        
+                        closeUploadModal();
+                        document.getElementById('uploadForm').reset();
+                        progressBar.style.display = 'none';
+                        progressFill.style.width = '0%';
+                        
+                        showUploadStatus(`✅ ${fileType.toUpperCase()} uploaded successfully!`, 'success');
+                        
+                        setTimeout(() => {
+                            alert(`🎉 SUCCESS!\n\nYour ${fileType} is now live worldwide!\n\n✅ Uploaded by: ${uploaderName}\n📍 From: ${uploaderLocation}\n🔥 Stored on Firebase\n🌍 Visible to everyone\n\nThank you!`);
+                        }, 500);
+                    }
+                );
+                
+            } catch (error) {
+                logger.log('Upload Error', { error: error.message });
+                showUploadStatus('❌ Upload failed: ' + error.message, 'error');
+                document.getElementById('progressBar').style.display = 'none';
+            }
+        }
+
+        // ========== LOAD WALLPAPERS TO UI ==========
+        function loadWallpapers(append = false) {
             const gallery = document.getElementById('gallery');
             
             if (!append) {
@@ -1293,8 +1382,10 @@
                     `<audio src="${wallpaper.src}" controls style="width: 100%; height: 50px;" alt="Audio ${wallpaper.id}"></audio>` :
                     `<img src="${wallpaper.src}" alt="Wallpaper ${wallpaper.id}" loading="lazy">`;
                 
-                const uploaderInfo = wallpaper.uploader ? 
-                    `<div class="wallpaper-meta">By: ${wallpaper.uploader}${wallpaper.location ? ` | ${wallpaper.location}` : ''}</div>` : '';
+                const uploaderInfo = wallpaper.uploader && wallpaper.uploader !== 'KaliWall' ? 
+                    `<div class="wallpaper-meta">👤 ${wallpaper.uploader}${wallpaper.location ? ` | 📍 ${wallpaper.location}` : ''}</div>` : 
+                    wallpaper.uploader === 'KaliWall' ? 
+                    `<div class="wallpaper-meta">⭐ Official Collection</div>` : '';
                 
                 div.innerHTML = `
                     ${mediaElement}
@@ -1303,7 +1394,7 @@
                             <span class="wallpaper-title">#${wallpaper.id}</span>
                             ${uploaderInfo}
                         </div>
-                        <a class="download-btn" onclick="handleDownload(event, '${wallpaper.src}', ${wallpaper.id})" aria-label="Download wallpaper ${wallpaper.id}">
+                        <a class="download-btn" onclick="handleDownload(event, '${wallpaper.src}', ${wallpaper.id})" aria-label="Download ${wallpaper.id}">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
@@ -1313,7 +1404,8 @@
 
             displayedCount = end;
             updateLoadMoreButton();
-            logger.log('Wallpapers Loaded', { displayed: displayedCount, total: allWallpapers.length });
+            updateStats();
+            logger.log('Wallpapers Displayed', { displayed: displayedCount, total: allWallpapers.length });
         }
 
         function updateLoadMoreButton() {
@@ -1330,6 +1422,10 @@
             }
         }
 
+        function updateStats() {
+            document.getElementById('active-users').textContent = allWallpapers.length.toLocaleString();
+        }
+
         function loadMore() {
             const btn = document.getElementById('loadMoreBtn');
             const textSpan = document.getElementById('loadMoreText');
@@ -1344,6 +1440,7 @@
             }, 800);
         }
 
+        // ========== GEOLOCATION ==========
         function getLocation() {
             logger.log('Geolocation Requested');
             if (navigator.geolocation) {
@@ -1369,10 +1466,9 @@
             }
         }
 
+        // ========== UPLOAD HANDLERS ==========
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
-        const uploadForm = document.getElementById('uploadForm');
-        const uploadStatus = document.getElementById('uploadStatus');
 
         uploadArea.addEventListener('click', () => fileInput.click());
 
@@ -1392,106 +1488,18 @@
             if (files.length > 0) fileInput.files = files;
         });
 
-        uploadForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const file = fileInput.files[0];
-            if (!file) {
-                showUploadStatus('❌ Please select a file!', 'error');
-                return;
-            }
-
-            const uploaderName = document.getElementById('uploaderName').value || 'Anonymous';
-            const uploaderLocation = document.getElementById('uploaderLocation').value || 'Unknown';
-
-            const confirmMessage = `
-🌍 WORLDWIDE UPDATE CONFIRMATION
-
-Are you sure you want to upload this file?
-
-📁 File: ${file.name}
-📊 Size: ${(file.size / 1024 / 1024).toFixed(2)} MB
-👤 Name: ${uploaderName}
-📍 Location: ${uploaderLocation}
-
-⚠️ This will be visible to EVERYONE worldwide!
-✅ All users can see and download your upload.
-
-Click OK to confirm upload.
-            `.trim();
-
-            if (!confirm(confirmMessage)) {
-                logger.log('Upload Cancelled by User', { filename: file.name });
-                return;
-            }
-
-            if (!confirm('⚠️ FINAL CONFIRMATION: Upload to public gallery? This cannot be undone!')) {
-                logger.log('Upload Cancelled at Final Step', { filename: file.name });
-                return;
-            }
-
-            showUploadStatus('⏳ Processing upload...', 'success');
-            logger.log('Upload Started', { 
-                filename: file.name, 
-                size: file.size, 
-                type: file.type,
-                uploader: uploaderName,
-                location: uploaderLocation 
-            });
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const fileType = file.type.startsWith('image') ? 'image' : 
-                                 file.type.startsWith('video') ? 'video' : 'audio';
-                
-                const newWallpaper = {
-                    id: Date.now(),
-                    src: e.target.result,
-                    category: 'uploaded',
-                    popular: false,
-                    type: fileType,
-                    uploader: uploaderName,
-                    location: uploaderLocation,
-                    uploadDate: new Date().toISOString()
-                };
-                
-                allWallpapers.unshift(newWallpaper);
-                saveWallpapers();
-                loadWallpapers(false);
-                
-                closeUploadModal();
-                uploadForm.reset();
-                
-                showUploadStatus(`✅ ${fileType.toUpperCase()} uploaded by ${uploaderName}! Now visible worldwide.`, 'success');
-                
-                logger.log('Upload Completed', { 
-                    id: newWallpaper.id,
-                    type: fileType,
-                    uploader: uploaderName,
-                    location: uploaderLocation
-                });
-
-                setTimeout(() => {
-                    alert(`🎉 SUCCESS!\n\nYour ${fileType} is now live!\n\n✅ Uploaded by: ${uploaderName}\n📍 From: ${uploaderLocation}\n🌍 Visible worldwide\n\nThank you!`);
-                }, 500);
-            };
-
-            reader.onerror = () => {
-                showUploadStatus('❌ Upload failed. Please try again.', 'error');
-                logger.log('Upload Failed', { filename: file.name });
-            };
-
-            reader.readAsDataURL(file);
-        });
-
         function showUploadStatus(message, type) {
+            const uploadStatus = document.getElementById('uploadStatus');
             uploadStatus.textContent = message;
             uploadStatus.className = `upload-status ${type}`;
-            setTimeout(() => {
-                uploadStatus.className = 'upload-status';
-            }, 5000);
+            if (!message.includes('Uploading:')) {
+                setTimeout(() => {
+                    uploadStatus.className = 'upload-status';
+                }, 5000);
+            }
         }
 
+        // ========== SEARCH & FILTERS ==========
         function searchWallpapers() {
             const input = document.getElementById("searchInput").value.toLowerCase().trim();
             const wallpapers = document.querySelectorAll(".wallpaper");
@@ -1555,6 +1563,15 @@ Click OK to confirm upload.
             logger.log('Filter Applied', { filter: 'Popular' });
         }
 
+        function filterCommunity(btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll(".wallpaper").forEach(w => {
+                w.style.display = w.dataset.category.includes('uploaded') ? "block" : "none";
+            });
+            logger.log('Filter Applied', { filter: 'Community' });
+        }
+
         function filterByTag(category, event) {
             event.preventDefault();
             document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
@@ -1596,6 +1613,7 @@ Click OK to confirm upload.
         }
 
         function filterLatest() {
+            allWallpapers.sort((a, b) => b.id - a.id);
             loadWallpapers(false);
             logger.log('Filter Applied', { filter: 'Latest' });
         }
@@ -1650,10 +1668,9 @@ Click OK to confirm upload.
             logger.log('Scrolled to Top');
         }
 
-        // Cursor effects - Desktop only
+        // ========== CURSOR EFFECTS ==========
         if (!isTouchDevice) {
             const cursor = document.querySelector('.custom-cursor');
-
             document.addEventListener('mousemove', (e) => {
                 if (cursor) {
                     cursor.style.left = e.clientX + 'px';
@@ -1662,9 +1679,51 @@ Click OK to confirm upload.
             });
         }
 
-        // Initialization
-        document.addEventListener("DOMContentLoaded", () => {
+        // ========== INITIALIZATION ==========
+        document.addEventListener("DOMContentLoaded", async () => {
+            console.log('%c🚀 KaliWall v3.0 Initializing...', 'color: #00C4B4; font-size: 16px; font-weight: bold;');
+            
+            const firebaseWallpapers = await loadFirebaseWallpapers();
+            
+            if (firebaseWallpapers.length > 0) {
+                console.log(`%c🔥 Merging ${firebaseWallpapers.length} Firebase + ${defaultWallpapers.length} Default`, 'color: #FF6B00; font-size: 14px;');
+                allWallpapers = [...firebaseWallpapers, ...defaultWallpapers];
+            } else {
+                console.log('%c📦 No Firebase items, using defaults', 'color: #FFB800; font-size: 14px;');
+                allWallpapers = [...defaultWallpapers];
+            }
+            
             loadWallpapers(false);
+            
+            console.log(`%c✅ Total: ${allWallpapers.length} wallpapers loaded`, 'color: #00ff9f; font-size: 16px; font-weight: bold;');
+
+            const uploadForm = document.getElementById('uploadForm');
+            uploadForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const file = fileInput.files[0];
+                if (!file) {
+                    showUploadStatus('❌ Please select a file!', 'error');
+                    return;
+                }
+
+                const uploaderName = document.getElementById('uploaderName').value || 'Anonymous';
+                const uploaderLocation = document.getElementById('uploaderLocation').value || 'Unknown';
+
+                const confirmMessage = `🔥 FIREBASE WORLDWIDE UPLOAD\n\n📁 File: ${file.name}\n📊 Size: ${(file.size / 1024 / 1024).toFixed(2)} MB\n👤 Name: ${uploaderName}\n📍 Location: ${uploaderLocation}\n\n⚠️ Visible to EVERYONE worldwide!\n\nClick OK to upload.`;
+
+                if (!confirm(confirmMessage)) {
+                    logger.log('Upload Cancelled', { filename: file.name });
+                    return;
+                }
+
+                if (!confirm('⚠️ FINAL CONFIRMATION: Upload to Firebase?')) {
+                    logger.log('Upload Cancelled Final', { filename: file.name });
+                    return;
+                }
+
+                await uploadToFirebase(file, uploaderName, uploaderLocation);
+            });
 
             if (typeof particlesJS !== 'undefined') {
                 particlesJS('particles-js', {
@@ -1682,17 +1741,13 @@ Click OK to confirm upload.
                             onhover: { enable: !isTouchDevice, mode: 'grab' }, 
                             onclick: { enable: true, mode: 'push' } 
                         },
-                        modes: {
-                            grab: { distance: 140 },
-                            push: { particles_nb: 4 }
-                        }
+                        modes: { grab: { distance: 140 }, push: { particles_nb: 4 } }
                     }
                 });
             }
 
             window.addEventListener('scroll', () => {
-                const scrollTop = document.getElementById('scrollTop');
-                scrollTop.style.display = window.pageYOffset > 300 ? 'flex' : 'none';
+                document.getElementById('scrollTop').style.display = window.pageYOffset > 300 ? 'flex' : 'none';
             });
 
             let downloads = 2547;
@@ -1700,7 +1755,6 @@ Click OK to confirm upload.
                 downloads += getRandomInt(1, 5);
                 document.getElementById('total-downloads').textContent = downloads.toLocaleString();
                 document.getElementById('live-users').textContent = getRandomInt(20, 50);
-                document.getElementById('active-users').textContent = getRandomInt(1800, 2300);
             }, 30000);
 
             const observer = new IntersectionObserver((entries) => {
@@ -1714,9 +1768,7 @@ Click OK to confirm upload.
 
             setInterval(() => {
                 document.querySelectorAll('.wallpaper img[loading="lazy"], .wallpaper video[loading="lazy"]').forEach(media => {
-                    if (media.style.opacity !== '1') {
-                        observer.observe(media);
-                    }
+                    if (media.style.opacity !== '1') observer.observe(media);
                 });
             }, 1000);
 
@@ -1725,18 +1777,15 @@ Click OK to confirm upload.
                     e.preventDefault();
                     document.getElementById('searchInput').focus();
                 }
-                
                 if (e.key === 'Escape') {
                     document.getElementById('searchInput').value = '';
                     searchWallpapers();
                     closeUploadModal();
                 }
-                
                 if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
                     e.preventDefault();
                     randomWallpaper();
                 }
-
                 if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
                     e.preventDefault();
                     openUploadModal();
@@ -1749,25 +1798,14 @@ Click OK to confirm upload.
             console.log('%c██╔═██╗ ██╔══██║██║     ██║    ██║███╗██║██╔══██║██║     ██║     ', 'color: #00C4B4; font-weight: bold;');
             console.log('%c██║  ██╗██║  ██║███████╗██║    ╚███╔███╔╝██║  ██║███████╗███████╗', 'color: #00DDEB; font-weight: bold;');
             console.log('%c╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝     ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝╚══════╝', 'color: #00ff9f; font-weight: bold;');
-            console.log('%c\n🚀 KaliWall v3.0 - SEO Optimized | Worldwide Gallery', 'color: #00C4B4; font-size: 16px; font-weight: bold;');
-            console.log(`%c📊 Total: ${allWallpapers.length} | Displayed: ${displayedCount}`, 'color: #00DDEB; font-size: 14px;');
-            console.log('%c⌨️ Shortcuts: Ctrl+K, Ctrl+R, Ctrl+U, Esc', 'color: #00ff9f; font-size: 12px;');
-            console.log('%c👤 User: shivam-the | Time: 2025-11-24 08:35:47 UTC', 'color: #B0BEC5; font-size: 12px;');
-            console.log('%c🌍 GitHub Pages | SEO Optimized | Logging Enabled', 'color: #00C4B4; font-size: 12px;');
+            console.log('%c\n🔥 KaliWall v3.0 - Firebase Powered', 'color: #FF6B00; font-size: 18px; font-weight: bold;');
+            console.log(`%c📊 Firebase: ${firebaseWallpapers.length} | Default: ${defaultWallpapers.length} | Total: ${allWallpapers.length}`, 'color: #00DDEB; font-size: 14px;');
+            console.log('%c👤 User: shivam-the | UTC: 2025-11-24 10:07:57', 'color: #B0BEC5; font-size: 12px;');
+            console.log('%c🌍 Firebase Storage | Firestore Database | Worldwide Access', 'color: #FF6B00; font-size: 12px;');
             console.log('%c\n👨‍💻 Developer: Shubham Singh (@shivam-the)', 'color: #00DDEB; font-size: 12px;');
             console.log('%c🔗 GitHub: https://github.com/shivam-the/kaliwall', 'color: #00ff9f; font-size: 12px;');
-            console.log('%c📝 View logs: logger.exportLogs()', 'color: #B0BEC5; font-size: 11px;');
-            
-            if ('performance' in window) {
-                window.addEventListener('load', () => {
-                    const perfData = window.performance.timing;
-                    const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
-                    console.log(`%c⚡ Page loaded in ${pageLoadTime}ms`, 'color: #00ff9f; font-size: 12px; font-weight: bold;');
-                    logger.log('Page Load Time', { time: pageLoadTime + 'ms' });
-                });
-            }
-
-            console.log('%c\n✅ All systems operational! Upload ready with double-check.', 'color: #00ff9f; font-size: 14px; font-weight: bold;');
+            console.log('%c📝 Logs: logger.exportLogs()', 'color: #B0BEC5; font-size: 11px;');
+            console.log('%c✅ All systems operational!', 'color: #00ff9f; font-size: 14px; font-weight: bold;');
         });
     </script>
 </body>
