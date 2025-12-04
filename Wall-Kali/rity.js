@@ -1,42 +1,36 @@
-const HARD_MODE = true;
-
+document.addEventListener("mousedown", e => e.preventDefault());
 document.addEventListener("contextmenu", e => e.preventDefault());
-document.addEventListener("mousedown", e => {
-  if (HARD_MODE) e.preventDefault();
-  else if (e.button === 2 || e.button === 1) e.preventDefault();
-}, true);
 
-["selectstart", "copy", "cut", "paste", "dragstart"].forEach(evt =>
+["copy", "cut", "paste", "dragstart", "selectstart"].forEach(evt =>
   document.addEventListener(evt, e => e.preventDefault())
 );
 
-document.addEventListener("keydown", function (event) {
-  const key = event.key.toLowerCase();
-  if (event.ctrlKey || event.shiftKey || event.altKey || event.metaKey) event.preventDefault();
-  const blocked = ["f12", "f11", "f5", "u", "s", "p", "r", "i", "j", "c", "a"];
-  if (blocked.includes(key)) event.preventDefault();
-});
-
-window.addEventListener("beforeprint", () => {
+window.addEventListener("beforeprint", e => {
   document.body.innerHTML = "";
 });
 
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) document.body.innerHTML = "";
+document.addEventListener("keydown", function(event) {
+  const key = event.key.toLowerCase();
+  if (event.ctrlKey || event.shiftKey || event.altKey || event.metaKey) event.preventDefault();
+  if (event.ctrlKey && ["s"].includes(key)) event.preventDefault();
+  if (event.ctrlKey && event.shiftKey && key === "s") event.preventDefault();
+  if (event.ctrlKey && key === "u") event.preventDefault();
+  if (["f12","escape"].includes(key)) event.preventDefault();
+  if (event.ctrlKey && event.shiftKey && ["i","c","j"].includes(key)) event.preventDefault();
+  if (event.ctrlKey && ["p","o","a","x","h","l"].includes(key)) event.preventDefault();
+  if (event.ctrlKey && key === "r") event.preventDefault();
 });
 
-(function () {
-  let last = performance.now();
-  let threshold = 200;
-  setInterval(() => {
-    if (
-      window.outerWidth - window.innerWidth > threshold ||
-      window.outerHeight - window.innerHeight > threshold
-    ) {
-      document.body.innerHTML = "";
-    }
-    const now = performance.now();
-    if (now - last > 300) document.body.innerHTML = "";
-    last = now;
-  }, 500);
-})();
+setInterval(() => {
+  let t = 200;
+  if (window.outerWidth - window.innerWidth > t || window.outerHeight - window.innerHeight > t) {
+    document.body.innerHTML = "";
+  }
+}, 500);
+
+document.addEventListener("visibilitychange", function() {
+  if (document.hidden) {
+    document.body.innerHTML = "";
+  }
+});
+
